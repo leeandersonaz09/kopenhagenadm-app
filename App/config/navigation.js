@@ -21,11 +21,11 @@ import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
 import Profile from "../screens/Profile";
 import Contact from "../screens/Contact";
+import addProductScreen from '../screens/AddProduct/index';
 import { useFirebase } from './firebase'
 import Badge from '../components/Badge';
 //import styles
 import { colors } from '../styles';
-
 //instancing navigators
 const AppTabs = createMaterialBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -90,6 +90,19 @@ const HomeStackScreen = () => (
 
       }}
 
+    />
+
+    <HomeStack.Screen
+      name="Addproduct"
+      component={addProductScreen}
+      options={{
+        headerTitle: 'Adicionar Produto',
+        headerTitleAlign: "center",
+        headerTintColor: colors.yellow,
+        headerStyle: {
+          backgroundColor: colors.black
+        },
+      }}
     />
 
   </HomeStack.Navigator>
@@ -224,8 +237,8 @@ const RootStackScreen = () => {
       {isLoading ? (
         <RootStack.Screen name="Loading" component={Loading} />
       ) : (
-          <RootStack.Screen name="AppTabsScreen" component={AppTabsScreen} />
-        )}
+        <RootStack.Screen name="AppTabsScreen" component={AppTabsScreen} />
+      )}
 
     </RootStack.Navigator>
   );

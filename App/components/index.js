@@ -15,6 +15,7 @@ import Item from './Item';
 import Profile from './Profile';
 import MyRequestTab from './MyRequestTab';
 import Banner from './SwipeBanner';
+import FabAdd from './FabAdd/index';
 
 export {
   Header,
@@ -32,5 +33,6 @@ export {
   Item,
   Profile,
   MyRequestTab,
-  Banner
+  Banner, 
+  FabAdd
 };

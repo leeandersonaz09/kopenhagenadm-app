@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, SafeAreaView, TouchableOpacity, ScrollView,  ImageBackground, Text, Platform } from 'react-native';
+import { View, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Text, Platform, Icon, Fab, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import styles from './styles';
-import { Category, Banner } from '../../components';
+import { Category, Banner, FabAdd } from '../../components';
 export default function Home({ navigation }) {
 
   const [data, setData] = useState([]);
@@ -64,10 +64,25 @@ export default function Home({ navigation }) {
 
   }, []);
 
+  const addProduct = () => {
+    navigation.push('Addproduct')
+    console.log("addProduct");
+  }
+
+  const addBairro = () => {
+    // navigation.push('Addproduct')
+    console.log("addBairro");
+  }
+
+  const addBanner = () => {
+    // navigation.push('Addproduct')
+    console.log("addBanner");
+  }
+
   const renderItens = () => {
 
     return (
-      <> 
+      <>
         <View style={styles.ProductContainer}>
 
           {data.map((data, index) =>
@@ -92,8 +107,8 @@ export default function Home({ navigation }) {
     <SafeAreaView style={styles.container}>
       {Platform.OS === 'ios' ? <StatusBar style="light" /> : null}
       <ScrollView>
-        <View style={{paddingTop:20}}/>
-      <Banner/>
+        <View style={{ paddingTop: 20 }} />
+        <Banner />
         <ImageBackground
           source={require('../../assets/homeimg.jpg')}
           style={styles.backgrounImage}
@@ -105,10 +120,11 @@ export default function Home({ navigation }) {
           </View>
 
         </ImageBackground>
-        
+
         {renderItens()}
-        
+
       </ScrollView>
+      <FabAdd addProduct={addProduct} addBairro={addBairro} addBanner={addBanner} />
     </SafeAreaView>
   );
 }

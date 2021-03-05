@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Alert, Text, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, TextInput, Image, Button, StatusBar } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Alert, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, TextInput, Image, Button, StatusBar, Picker } from "react-native";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,21 +7,27 @@ import FireFunctions from "../../config/FireFunctions";
 import * as ImagePicker from "expo-image-picker";
 import Lottie from 'lottie-react-native';
 import dataloading from '../../loaders/mario.json';
+import { Container, Textarea } from "native-base"
 
-export default class addProductScreen extends React.Component {
-    state = {
-        text: "",
-        description: "",
-        price: "",
-        image: null,
-        loading: false
-    };
+import { fonts, colors, metrics } from '../../styles';
 
-    componentDidMount() {
-        this.getPhotoPermission();
-    }
+export default function addProductScreen({ navigation }) {
 
-    getPhotoPermission = async () => {
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [price, setPrice] = useState("")
+    const [image, setImage] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [selectedLanguage, setSelectedLanguage] = useState();
+
+    useEffect(() => {
+        const unsubscribe = getPhotoPermission()
+        return () => {
+            unsubscribe
+        }
+    }, [])
+
+    const getPhotoPermission = async () => {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -31,10 +37,10 @@ export default class addProductScreen extends React.Component {
         }
     };
 
-    handlePost = async () => {
-        this.setState({ loading: true });
+    const handlePost = async () => {
+        setLoading(true)
         FireFunctions.shared
-            .addPost({ text: this.state.text.trim(), price: this.state.price.trim(), description: this.state.description.trim(), localUri: this.state.image })
+            .addPost({ title: title.trim(), price: price.trim(), description: description.trim(), img: image })
             .then(ref => {
 
                 setTimeout(() => {
@@ -45,8 +51,8 @@ export default class addProductScreen extends React.Component {
                         }
                     ]);
 
-                    this.setState({ text: "", image: null, loading: false });
-                    this.props.navigation.push('Home');
+                    setTitle(""); setImage(null); setLoading(false); setDescription("");
+                    navigation.push('Home');
                 },
                     1000);
             })
@@ -55,89 +61,107 @@ export default class addProductScreen extends React.Component {
             });
     };
 
-    pickImage = async () => {
+    const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
         });
 
         if (!result.cancelled) {
-            this.setState({ image: result.uri });
+            setImage(result.uri);
         }
     };
 
-
-    render() {
-
-        if (this.state.loading == true) {
-            return (
-                <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
-                    <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
-                    <Text style={{ textAlign: 'center', color: '#ff5b77', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
-                </View>
-            )
-        }
-
+    if (loading == true) {
         return (
-            <>
-                <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                    <View>
-                        {this.state.image ? (
-                            <Image
-                                source={{ uri: this.state.image }}
-                                style={{ width: '100%', height: 300 }}
-                            />
-                        ) : (
-                            <TouchableOpacity onPress={this.pickImage}>
-                                <Image style={styles.ButtonImg} source={require('../../assets/add_p.png')} />
-                            </TouchableOpacity>
-                        )}
+            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#ffff' }}>
+                <Lottie source={dataloading} style={{ width: 350, height: 350 }} autoPlay loop />
+                <Text style={{ textAlign: 'center', color: '#ff5b77', fontSize: 12 }}>Aguarde... Estamos Salvando as Alterações</Text>
+            </View>
+        )
+    }
 
-                        <View style={styles.filds}>
+    return (
+        <>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+                <View>
+                    {image ? (
+                        <Image
+                            source={{ uri: image }}
+                            style={{ width: '100%', height: 300, borderRadius: 20 }}
+                        />
+                    ) : (
+                        <TouchableOpacity onPress={() => pickImage()}>
+                            <Image style={styles.ButtonImg} source={require('../../assets/add_p.png')} />
+                        </TouchableOpacity>
+                    )}
 
-                            <Text style={styles.Tittle} >Adicionar um cupom de desconto</Text>
+                    <View style={styles.filds}>
 
-                            <TextInput
-                                style={styles.inputTittle}
-                                placeholder="Titulo"
-                                value={this.state.text}
-                                onChangeText={text => this.setState({ text })}
-                            />
+                        <Text style={styles.Tittle} >Adicionar um cupom de desconto</Text>
 
-                            <TextInput
-                                style={styles.inputDescription}
-                                value={this.state.description}
-                                placeholder="Descrição"
-                                onChangeText={description => this.setState({ description })}
-                            />
+                        <TextInput
+                            style={styles.inputTittle}
+                            placeholder="Titulo"
+                            value={title}
+                            onChangeText={text => setTitle(text)}
+                        />
+                        <View style={{ borderWidth: 1, borderColor: colors.gray, borderRadius: 20 }}>
+                            <Picker
+                                selectedValue={selectedLanguage}
+                                style={styles.onePicker}
+                                itemStyle={styles.onePickerItem}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedLanguage(itemValue)
+                                }>
 
-                            <TextInput
-                                style={styles.inputPrice}
-                                placeholder="Valor"
-                                keyboardType='phone-pad'
-                                autoCompleteType='cc-number'
-                                value={this.state.price}
-                                onChangeText={price => this.setState({ price })}
-                            />
+                                <Picker.Item label="Clássicos" value="classicos" />
+                                <Picker.Item label="Infantil" value="infantil" />
+                                <Picker.Item label="Soul Good" value="soulgood" />
+                                <Picker.Item label="Variedades" value="variedades" />
+                                <Picker.Item label="Presentes" value="presentes" />
+                                <Picker.Item label="Keepkop" value="keepkop" />
+                                <Picker.Item label="Tabletes" value="tabletes" />
+                                <Picker.Item label="Outros" value="outros" />
+                            </Picker>
+                        </View>
+                        <Textarea
+                            style={styles.inputDescription}
+                            rowSpan={5}
+                            bordered
+                            value={description}
+                            placeholder="Descrição"
+                            placeholderStyle={{ fontFamily: fonts.SFP_regular, paddingHorizontal: 20, marginTop: 20 }}
+                            onChangeText={description => setDescription(description)}
+                        />
+                        <TextInput
+                            style={styles.inputPrice}
+                            placeholder="Valor"
+                            keyboardType='phone-pad'
+                            autoCompleteType='cc-number'
+                            value={price}
+                            placeholderStyle={{ fontFamily: fonts.SFP_regular, paddingHorizontal: 20, marginTop: 20 }}
+                            onChangeText={price => setPrice(price)}
+                        />
 
-                            <View style={styles.ButtonSend}>
-                                <Button
-                                    status='success'
-                                    title='Cadastrar'
-                                    onPress={this.handlePost}
-                                    disabled={
-                                        this.state.image && this.state.text && this.state.description && this.state.price
-                                            ? false
-                                            : true
-                                    }>
-                                </Button>
-                            </View>
+                        <View style={styles.ButtonSend}>
+                            <Button
+                                status='success'
+                                title='Cadastrar'
+                                onPress={() => handlePost()}
+                                disabled={
+                                    image && title && description && price
+                                        ? false
+                                        : true
+                                }>
+                            </Button>
                         </View>
                     </View>
-                </KeyboardAvoidingView>
-            </>
-        );
-    }
+                </View>
+            </KeyboardAvoidingView>
+        </>
+    );
+
 }
 
 const styles = StyleSheet.create({
@@ -170,7 +194,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         alignSelf: 'center',
-        marginBottom: 20
+        marginBottom: 20,
     },
     ButtonImg: {
         marginBottom: 100,
@@ -179,34 +203,33 @@ const styles = StyleSheet.create({
         height: 100
     },
     ButtonSend: {
-        marginTop: 20
+        marginTop: 10
     },
     inputTittle: {
         borderWidth: 1,
         borderColor: '#DDD',
-        paddingHorizontal: 10,
         fontSize: 16,
         color: '#444',
         height: 44,
         marginBottom: 10,
+        borderRadius: 10
     },
     inputDescription: {
         borderWidth: 1,
         borderColor: '#DDD',
-        paddingHorizontal: 10,
         fontSize: 16,
         color: '#444',
-        height: 44,
         marginBottom: 10,
+        borderRadius: 10
     },
     inputPrice: {
         borderWidth: 1,
         borderColor: '#DDD',
-        paddingHorizontal: 10,
         fontSize: 16,
         color: '#444',
         height: 44,
         marginBottom: 10,
+        borderRadius: 10
     }
 
 });

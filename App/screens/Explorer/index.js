@@ -1,15 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import {View, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList, ActivityIndicator, Text } from 'react-native';
+import { View, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList, ActivityIndicator, Text, Animated } from 'react-native';
 import { Icon, Spinner } from 'native-base';
 import styles from './styles';
 import { colors, metrics } from '../../styles';
-import { ExplorerList} from '../../components';
+import { ExplorerList } from '../../components';
 import { useFirebase } from '../../config/firebase'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
 
+const Separator = () => <View style={styles.itemSeparator} />
+
+/*
+const LeftActions = (progress, dragX) => {
+  const scale = dragX.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 1],
+    extrapolate: 'clamp'
+  })
+  return (
+    <View
+      style={{ flex: 1, backgroundColor: 'blue', justifyContent: 'center' }}>
+      <Animated.Text
+        style={{
+          color: 'white',
+          paddingHorizontal: 10,
+          fontWeight: '600',
+          transform: [{ scale }]
+        }}>
+        Left Action
+      </Animated.Text>
+    </View>
+  )
+}
+*/
 
 function Explorer({ route, navigation }) {
-  const { getDataExplorer, getmoreDataExplorer } = useFirebase();
+  const { getDataExplorer, getmoreDataExplorer, deleteItembyId } = useFirebase();
 
   const [limit] = useState(10);
   const { category } = route.params;
@@ -26,12 +52,12 @@ function Explorer({ route, navigation }) {
 
   useEffect(() => {
 
-   const unsubscribe =  getData()
+    const unsubscribe = getData()
     const checkifisConnected = CheckConnectivity();
     // Unsubscribe from events when no longer in use
     return () => {
       checkifisConnected;
-      unsubscribe;      
+      unsubscribe;
     };
 
   }, []);
@@ -48,6 +74,56 @@ function Explorer({ route, navigation }) {
 
     });
   };
+
+  const RightActions = (progress, dragX) => {
+    
+    const scale = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [0.7, 0]
+    });
+
+    return (
+      <>
+        <TouchableOpacity onPress={() => alert('Delete button pressed')}>
+          <View
+            style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center' }}>
+            <Animated.Text
+              style={{
+                color: 'white',
+                paddingHorizontal: 10,
+                fontWeight: '600',
+                transform: [{ scale }]
+              }}>
+              Delete
+            </Animated.Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => alert('Arquive button pressed')}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'green',
+              justifyContent: 'center'
+            }}>
+            <Animated.Text
+              style={{
+                color: 'white',
+                paddingHorizontal: 10,
+                fontWeight: '600',
+                transform: [{ scale }]
+              }}>
+              Archive
+            </Animated.Text>
+          </View>
+        </TouchableOpacity>
+      </>
+    )
+  }
+
+  const deleteItem = (id) => {
+    console.log(id)
+    // deleteItembyId(id)
+  }
 
   const getData = async () => {
 
@@ -121,7 +197,7 @@ function Explorer({ route, navigation }) {
             setRefreshing(false);
           }, 2000);
         }
-      
+
       }
     )
     setRefreshing(false);
@@ -163,15 +239,15 @@ function Explorer({ route, navigation }) {
   const renderItens = (item, index) => {
     return (
       <>
-        <View key={item.id} style={{ backgroundColor: '#fff' }}>
-          <TouchableOpacity
-            onPress={() => navigation.push('Detalhes', item,)}
-          >
-            <View style={styles.separatorContainer}>
+        <Swipeable key={item.id} renderRightActions={() => RightActions(item.id)} deleteItem={deleteItem(item.id)} >
+          <View style={{ backgroundColor: '#fff' }}>
+            <TouchableOpacity
+              onPress={() => navigation.push('Detalhes', item,)}
+            >
               <ExplorerList data={item} />
-            </View>
-          </TouchableOpacity>
-        </View>
+            </TouchableOpacity>
+          </View>
+        </Swipeable>
       </>
     )
   }
@@ -182,7 +258,7 @@ function Explorer({ route, navigation }) {
 
       return (
         <FlatList
-          style={{ marginBottom: 40 }}
+          style={{ marginBottom: 40, }}
           data={documentData}
           renderItem={({ item, index }) => renderItens(item, index)}
           // On End Reached (Takes a function)
@@ -191,6 +267,7 @@ function Explorer({ route, navigation }) {
           keyExtractor={item => item.id}
           refreshing={refreshing}
           ListFooterComponent={() => renderFooter()}
+          ItemSeparatorComponent={() => <Separator />}
         />
       )
     } else {

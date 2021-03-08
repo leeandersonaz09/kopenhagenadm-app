@@ -110,12 +110,35 @@ const useFirebase = () => {
     });
   }
 
+//delete item to wallet 
+const deleteItembyId = async (id) => {
+
+  firebase.firestore()
+    .collection('Produtos')
+    .doc(id)
+    .delete()
+};
+
   const login = useCallback((email, password) => firebase.auth()
     .signInWithEmailAndPassword(email, password), []);
 
   const logout = useCallback(() => firebase.auth().signOut(), [])
 
-  return { login, authUser, logout, getDocumentFrete, addProduct, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer, getBanner }
+  return { 
+    login, 
+    authUser, 
+    logout, 
+    getDocumentFrete, 
+    addProduct, 
+    getDocument, 
+    saveDocument, 
+    deleteItembyId,
+    saveDocumentPedidos, 
+    getMyrequest, 
+    getDataExplorer,
+    getmoreDataExplorer, 
+    getBanner
+  }
 }
 
 export { useFirebase }

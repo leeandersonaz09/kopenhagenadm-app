@@ -75,7 +75,7 @@ function Explorer({ route, navigation }) {
     });
   };
 
-  const RightActions = (progress, dragX) => {
+  const RightActions = (progress, dragX, item) => {
     
     const scale = dragX.interpolate({
       inputRange: [-100, 0],
@@ -84,7 +84,7 @@ function Explorer({ route, navigation }) {
 
     return (
       <>
-        <TouchableOpacity onPress={() => alert('Delete button pressed')}>
+        <TouchableOpacity onPress={() => deleteItem(item.id)}>
           <View
             style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center' }}>
             <Animated.Text
@@ -94,11 +94,11 @@ function Explorer({ route, navigation }) {
                 fontWeight: '600',
                 transform: [{ scale }]
               }}>
-              Delete
+              <Icon style={{ fontSize: 28, color: colors.text,padingLeft: 10 }} name={'trash'} />
             </Animated.Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => alert('Arquive button pressed')}>
+        <TouchableOpacity onPress={() => editItem(item.id)}>
           <View
             style={{
               flex: 1,
@@ -112,7 +112,25 @@ function Explorer({ route, navigation }) {
                 fontWeight: '600',
                 transform: [{ scale }]
               }}>
-              Archive
+              <Icon style={{ fontSize: 28, color: colors.text,padingLeft: 10 }} name={'pencil'} />
+            </Animated.Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => statusItem(item.id)}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'blue',
+              justifyContent: 'center'
+            }}>
+            <Animated.Text
+              style={{
+                color: 'white',
+                paddingHorizontal: 10,
+                fontWeight: '600',
+                transform: [{ scale }]
+              }}>
+              <Icon style={{ fontSize: 28, color: colors.text,padingLeft: 10 }} name={'box-lock'} />
             </Animated.Text>
           </View>
         </TouchableOpacity>
@@ -121,6 +139,15 @@ function Explorer({ route, navigation }) {
   }
 
   const deleteItem = (id) => {
+    console.log(id)
+    // deleteItembyId(id)
+  }
+  const editItem = (id) => {
+    console.log(id)
+    // deleteItembyId(id)
+  }
+
+  const statusItem = (id) => {
     console.log(id)
     // deleteItembyId(id)
   }
@@ -239,7 +266,8 @@ function Explorer({ route, navigation }) {
   const renderItens = (item, index) => {
     return (
       <>
-        <Swipeable key={item.id} renderRightActions={() => RightActions(item.id)} deleteItem={deleteItem(item.id)} >
+        <Swipeable key={item.id} renderRightActions={(progress, dragX) => RightActions(progress, dragX, item)} >
+
           <View style={{ backgroundColor: '#fff' }}>
             <TouchableOpacity
               onPress={() => navigation.push('Detalhes', item,)}

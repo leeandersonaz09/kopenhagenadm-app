@@ -84,17 +84,21 @@ class FireFunctions {
         });
     };
 
-    addPost = async ({ text, price, description, localUri }) => {
+    addPost = async ({ title, price, data, description, localUri, status, category  }) => {
+        
         const remoteUri = await this.uploadPhotoAsync(localUri);
 
         return new Promise((res, rej) => {
             this.firestore
-                .collection("products")
+                .collection("Produtos")
                 .add({
-                    produto: text,
+                    title: title,
                     descricao: description,
-                    valor: 'R$ ' + price,
+                    valor: price,
                     img: remoteUri,
+                    status: status,
+                    category: category,
+                    data: data
                 })
                 .then(ref => {
                     res(ref);
@@ -106,8 +110,8 @@ class FireFunctions {
     };
 
     uploadPhotoAsync = async uri => {
-        const path = `products/${this.uid}/${Date.now()}.jpg`;
-
+        const path = `Post/${this.uid}/${Date.now()}.jpg`;
+        
         return new Promise(async (res, rej) => {
             const response = await fetch(uri);
             const file = await response.blob();
@@ -122,6 +126,7 @@ class FireFunctions {
                 snapshot => { },
                 err => {
                     rej(err);
+                    console.log(err)
                 },
                 async () => {
                     const url = await upload.snapshot.ref.getDownloadURL();

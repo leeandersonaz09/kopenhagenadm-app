@@ -95,12 +95,27 @@ const useFirebase = () => {
       .doc(documentPath)
       .set(document);
   }
+
+  const addProduct = ( title, price, data, description, remoteUri, status, category) => {
+    firebase.firestore()
+      .collection('Produtos')
+      .set({
+        title: title,
+        descricao: description,
+        valor: price,
+        img: remoteUri,
+        status: status,
+        category: category,
+        data: data
+    });
+  }
+
   const login = useCallback((email, password) => firebase.auth()
     .signInWithEmailAndPassword(email, password), []);
 
   const logout = useCallback(() => firebase.auth().signOut(), [])
 
-  return { login, authUser, logout, getDocumentFrete, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer, getBanner }
+  return { login, authUser, logout, getDocumentFrete, addProduct, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer, getBanner }
 }
 
 export { useFirebase }

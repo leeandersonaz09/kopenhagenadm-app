@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { Tabs, Tab, TabHeading, Icon, ScrollableTab } from 'native-base';
 import Tab1 from './cart';
-import { MyRequestTab as Tab2 } from '../../components';
+import { MyRequestTab } from '../../components';
 import styles from './styles';
 import colors from '../../styles/colors';
 import { useFirebase } from '../../config/firebase'
@@ -37,14 +37,7 @@ export default function Cart({ navigation }) {
 		<>
 			<SafeAreaView style={{ backgroundColor: colors.black }} />
 
-			<Tabs tabBarBackgroundColor={colors.black} tabBarUnderlineStyle={{ backgroundColor: colors.yellow }} renderTabBar={() => <ScrollableTab />}>
-				<Tab heading={<TabHeading style={{ backgroundColor: colors.black }}><Icon style={styles.TabIcon} name="md-cart" /><Text style={styles.TabText} >Meu carrinho</Text></TabHeading>}>
-					<Tab1 />
-				</Tab>
-				<Tab heading={<TabHeading style={{ backgroundColor: colors.black }}><Icon style={styles.TabIcon} name="archive-outline" /><Text style={styles.TabText} >Meus pedidos</Text></TabHeading>}>
-					{ authUser ? <Tab2 /> : renderNologgeding()}
-				</Tab>
-			</Tabs>
+			{ authUser ? <MyRequestTab /> : renderNologgeding()}
 
 		</>
 

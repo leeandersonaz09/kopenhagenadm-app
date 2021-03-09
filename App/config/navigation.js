@@ -22,6 +22,7 @@ import SignUpScreen from "../screens/Signup";
 import Profile from "../screens/Profile";
 import Contact from "../screens/Contact";
 import addProductScreen from '../screens/AddProduct/index';
+import editProductScreen from '../screens/EditProduct/index';
 import { useFirebase } from './firebase'
 import Badge from '../components/Badge';
 //import styles
@@ -97,6 +98,19 @@ const HomeStackScreen = () => (
       component={addProductScreen}
       options={{
         headerTitle: 'Adicionar Produto',
+        headerTitleAlign: "center",
+        headerTintColor: colors.yellow,
+        headerStyle: {
+          backgroundColor: colors.black
+        },
+      }}
+    />
+
+<HomeStack.Screen
+      name="Editproduct"
+      component={editProductScreen}
+      options={{
+        headerTitle: 'Editar Produto',
         headerTitleAlign: "center",
         headerTintColor: colors.yellow,
         headerStyle: {

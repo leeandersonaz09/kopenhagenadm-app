@@ -63,7 +63,6 @@ const useFirebase = () => {
 
     firebase.firestore()
       .collection('Pedidos')
-      .where("userId", "==", authUser.uid)
       .orderBy('data', 'desc')
       .onSnapshot(onUpdate);
   }
@@ -75,7 +74,7 @@ const useFirebase = () => {
       .onSnapshot(onUpdate);
   }
 
-  const getDocumentFrete = (documentPath , onUpdate) => {
+  const getDocumentFrete = (documentPath, onUpdate) => {
     firebase.firestore()
       .collection('Frete')
       .doc(documentPath)
@@ -96,7 +95,7 @@ const useFirebase = () => {
       .set(document);
   }
 
-  const addProduct = ( title, price, data, description, remoteUri, status, category) => {
+  const addProduct = (title, price, data, description, remoteUri, status, category) => {
     firebase.firestore()
       .collection('Produtos')
       .set({
@@ -107,37 +106,45 @@ const useFirebase = () => {
         status: status,
         category: category,
         data: data
-    });
+      });
   }
 
-//delete item to wallet 
-const deleteItembyId = async (id) => {
+  const editStatus = (documentPath, status) => {
+    firebase.firestore()
+      .collection('Produtos')
+      .doc(documentPath)
+      .update(status);
+  }
 
-  firebase.firestore()
-    .collection('Produtos')
-    .doc(id)
-    .delete()
-};
+  //delete item to wallet 
+  const deleteItembyId = async (id) => {
+
+    firebase.firestore()
+      .collection('Produtos')
+      .doc(id)
+      .delete()
+  };
 
   const login = useCallback((email, password) => firebase.auth()
     .signInWithEmailAndPassword(email, password), []);
 
   const logout = useCallback(() => firebase.auth().signOut(), [])
 
-  return { 
-    login, 
-    authUser, 
-    logout, 
-    getDocumentFrete, 
-    addProduct, 
-    getDocument, 
-    saveDocument, 
+  return {
+    login,
+    authUser,
+    logout,
+    getDocumentFrete,
+    addProduct,
+    getDocument,
+    saveDocument,
     deleteItembyId,
-    saveDocumentPedidos, 
-    getMyrequest, 
+    saveDocumentPedidos,
+    getMyrequest,
     getDataExplorer,
-    getmoreDataExplorer, 
-    getBanner
+    getmoreDataExplorer,
+    getBanner,
+    editStatus
   }
 }
 

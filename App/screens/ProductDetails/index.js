@@ -21,12 +21,9 @@ function ProductDetails({ route, navigation }) {
     
     function addItemCart(item) {
         //console.log(item)
-		dispatch(addItem(item));
+		//dispatch(addItem(item));
 
-		showMessage({
-			message: `${item.title} adicioando com sucesso`,
-			type: 'success'
-		});
+		navigation.navigate('Kopenhagen')
 	}
 
     return (
@@ -44,9 +41,9 @@ function ProductDetails({ route, navigation }) {
                         key={data.id}
                         onPress={() => addItemCart(data)}
                         style={styles.addCartButton}>
-                        <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar ao </Text>
+                        <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Voltar </Text>
                         <View style={{ width: 10 }} />
-                        <Icon name="ios-cart" size={30} style={{ color: '#fff' }} />
+                        <Icon name="home" size={30} style={{ color: '#fff' }} />
                     </TouchableOpacity>
                 </View>
             </ScrollView>

@@ -7,6 +7,7 @@ import { colors, metrics } from '../../styles';
 import { ExplorerList } from '../../components';
 import { useFirebase } from '../../config/firebase'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
+import { showMessage } from 'react-native-flash-message';
 
 const Separator = () => <View style={styles.itemSeparator} />
 
@@ -35,7 +36,7 @@ const LeftActions = (progress, dragX) => {
 */
 
 function Explorer({ route, navigation }) {
-  const { getDataExplorer, getmoreDataExplorer, deleteItembyId } = useFirebase();
+  const { getDataExplorer, getmoreDataExplorer, deleteItembyId, editStatus } = useFirebase();
 
   const [limit] = useState(10);
   const { category } = route.params;
@@ -75,6 +76,14 @@ function Explorer({ route, navigation }) {
     });
   };
 
+  const checkifOutStock=()=>{
+    showMessage({
+      message: `Produto temporariamente sem estoque!`,
+      type: 'warning',
+      duration: 2000
+  })
+  }
+
   const RightActions = (progress, dragX, item) => {
     
     const scale = dragX.interpolate({
@@ -94,11 +103,11 @@ function Explorer({ route, navigation }) {
                 fontWeight: '600',
                 transform: [{ scale }]
               }}>
-              <Icon style={{ fontSize: 28, color: colors.text,padingLeft: 10 }} name={'trash'} />
+              <Icon style={{ fontSize: 28, color: colors.text,}} type={'MaterialCommunityIcons'} name={'delete'} />
             </Animated.Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => editItem(item.id)}>
+        <TouchableOpacity onPress={() => editItem(item)}>
           <View
             style={{
               flex: 1,
@@ -112,11 +121,11 @@ function Explorer({ route, navigation }) {
                 fontWeight: '600',
                 transform: [{ scale }]
               }}>
-              <Icon style={{ fontSize: 28, color: colors.text,padingLeft: 10 }} name={'pencil'} />
+              <Icon style={{ fontSize: 28, color: colors.text }} type={'MaterialCommunityIcons'} name={'pencil'} />
             </Animated.Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => statusItem(item.id)}>
+        <TouchableOpacity onPress={() => statusItem(item.id, item.status)}>
           <View
             style={{
               flex: 1,
@@ -130,7 +139,7 @@ function Explorer({ route, navigation }) {
                 fontWeight: '600',
                 transform: [{ scale }]
               }}>
-              <Icon style={{ fontSize: 28, color: colors.text,padingLeft: 10 }} name={'box-lock'} />
+              <Icon style={{ fontSize: 28, color: colors.text }} type={'MaterialCommunityIcons'} name={!item.status ? 'lock-open-check' : 'lock'} />
             </Animated.Text>
           </View>
         </TouchableOpacity>
@@ -139,17 +148,16 @@ function Explorer({ route, navigation }) {
   }
 
   const deleteItem = (id) => {
-    console.log(id)
-    // deleteItembyId(id)
+
+    deleteItembyId(id)
   }
-  const editItem = (id) => {
-    console.log(id)
-    // deleteItembyId(id)
+  const editItem = (data) => {
+    navigation.push('Editproduct', data)
   }
 
-  const statusItem = (id) => {
-    console.log(id)
-    // deleteItembyId(id)
+  const statusItem = (id, value) => {
+
+    editStatus(id, {status: !value})
   }
 
   const getData = async () => {
@@ -167,7 +175,7 @@ function Explorer({ route, navigation }) {
 
         querySnapshot.forEach(doc => {
 
-          const { img, tittle, description, price, data } = doc.data();
+          const { img, tittle, description, price, data, status, category } = doc.data();
           list.push({
             id: doc.id,
             img,
@@ -175,6 +183,8 @@ function Explorer({ route, navigation }) {
             title: tittle,
             price,
             data,
+            status, 
+            category
           });
         });
 
@@ -208,7 +218,7 @@ function Explorer({ route, navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach(doc => {
 
-            const { img, tittle, description, price, data } = doc.data();
+            const { img, tittle, description, price, data, status, category } = doc.data();
             list.push({
               id: doc.id,
               img,
@@ -216,6 +226,8 @@ function Explorer({ route, navigation }) {
               title: tittle,
               price,
               data,
+              status,
+              category
             });
           });
           setdataBackup([...documentData, ...list]);
@@ -270,7 +282,7 @@ function Explorer({ route, navigation }) {
 
           <View style={{ backgroundColor: '#fff' }}>
             <TouchableOpacity
-              onPress={() => navigation.push('Detalhes', item,)}
+              onPress={() => item.status ? navigation.push('Detalhes', item,) : checkifOutStock()}
             >
               <ExplorerList data={item} />
             </TouchableOpacity>

@@ -9,21 +9,22 @@ import * as ImagePicker from "expo-image-picker";
 import Lottie from 'lottie-react-native';
 import dataloading from '../../loaders/mario.json';
 import { Container, Textarea } from "native-base"
-import moment from 'moment';
-import 'moment/locale/pt-br';
 import { fonts, colors, metrics } from '../../styles';
 import { ScrollView } from "react-native-gesture-handler";
 import { showMessage } from 'react-native-flash-message';
 import * as firebase from 'firebase';
-export default function addProductScreen({ navigation }) {
+
+export default function editProductScreen({ route, navigation }) {
+
+    const data = route.params;
 
     const { authUser, addProduct } = useFirebase();
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
-    const [price, setPrice] = useState("")
-    const [image, setImage] = useState(null)
+    const [title, setTitle] = useState(data.title)
+    const [description, setDescription] = useState(data.description)
+    const [price, setPrice] = useState(data.price)
+    const [image, setImage] = useState(data.img)
     const [loading, setLoading] = useState(false)
-    const [category, setCategory] = useState("classicos");
+    const [category, setCategory] = useState(data.category);
     const [status, setStatus] = useState(true);
 
     useEffect(() => {
@@ -51,13 +52,11 @@ export default function addProductScreen({ navigation }) {
             const remoteUri = await FireFunctions.shared.uploadPhotoAsync(image)
             console.log(remoteUri);
 
-            moment.locale('pt-br');
-            const data = moment().format('lll')
 
             firebase.firestore()
                 .collection("Produtos")
-                .add({
-                    data: data,
+                .doc(data.id)
+                .update({
                     tittle: title.trim(),
                     price: price.trim(),
                     description: description.trim(),
@@ -75,6 +74,7 @@ export default function addProductScreen({ navigation }) {
                     setImage(null);
                     setDescription("");
                     setPrice("");
+                    navigation.navigate("Home")
                 }).catch(error => {
                     showMessage({
                         message: `Houve um erro!` + error,

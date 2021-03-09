@@ -106,7 +106,7 @@ const HomeStackScreen = () => (
       }}
     />
 
-<HomeStack.Screen
+    <HomeStack.Screen
       name="Editproduct"
       component={editProductScreen}
       options={{

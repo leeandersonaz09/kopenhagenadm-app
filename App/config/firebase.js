@@ -109,9 +109,9 @@ const useFirebase = () => {
       });
   }
 
-  const editStatus = (documentPath, status) => {
+  const editStatus = (collPath, documentPath, status) => {
     firebase.firestore()
-      .collection('Produtos')
+      .collection(collPath,)
       .doc(documentPath)
       .update(status);
   }

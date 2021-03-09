@@ -157,7 +157,7 @@ function Explorer({ route, navigation }) {
 
   const statusItem = (id, value) => {
 
-    editStatus(id, {status: !value})
+    editStatus("Produtos", id, {status: !value})
   }
 
   const getData = async () => {

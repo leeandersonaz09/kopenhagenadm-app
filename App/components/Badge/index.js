@@ -7,7 +7,7 @@ import { cartQuantitySelector } from "../../store/cart";
 import styles from './styles';
 
 export default function Badge() {
-	const length = useSelector(cartQuantitySelector);
+	const length = 0;
 
 	return (
 		<View style={styles.container}>

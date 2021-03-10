@@ -75,7 +75,7 @@ export default function Home({ navigation }) {
   }
 
   const addBanner = () => {
-    // navigation.push('Addproduct')
+    navigation.push('addBanner')
     console.log("addBanner");
   }
 

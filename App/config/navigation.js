@@ -21,8 +21,9 @@ import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
 import Profile from "../screens/Profile";
 import Contact from "../screens/Contact";
-import addProductScreen from '../screens/AddProduct/index';
-import editProductScreen from '../screens/EditProduct/index';
+import addProductScreen from '../screens/AddProduct';
+import editProductScreen from '../screens/EditProduct';
+import addBanner from '../screens/addBanner';
 import { useFirebase } from './firebase'
 import Badge from '../components/Badge';
 //import styles
@@ -105,7 +106,18 @@ const HomeStackScreen = () => (
         },
       }}
     />
-
+    <HomeStack.Screen
+      name="addBanner"
+      component={addBanner}
+      options={{
+        headerTitle: 'Banner Promocional',
+        headerTitleAlign: "center",
+        headerTintColor: colors.yellow,
+        headerStyle: {
+          backgroundColor: colors.black
+        },
+      }}
+    />
   </HomeStack.Navigator>
 );
 

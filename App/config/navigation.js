@@ -43,7 +43,6 @@ const HomeStackScreen = () => (
     <HomeStack.Screen
       name="Kopenhagen"
       component={HomeScreen}
-
       options={{
         headerTitleAlign: "center",
         headerTintColor: colors.yellow,
@@ -57,13 +56,10 @@ const HomeStackScreen = () => (
           />
         ),
       }}
-
     />
-
     <HomeStack.Screen
       name="Catálogo"
       component={ExplorerScreen}
-
       options={{
         headerTitle: 'Produtos',
         headerTitleAlign: "center",
@@ -71,16 +67,11 @@ const HomeStackScreen = () => (
         headerStyle: {
           backgroundColor: colors.black
         },
-
-
       }}
-
     />
-
     <HomeStack.Screen
       name="Detalhes"
       component={ProductDetails}
-
       options={{
         headerTitle: 'Detalhes',
         headerTitleAlign: "center",
@@ -88,11 +79,8 @@ const HomeStackScreen = () => (
         headerStyle: {
           backgroundColor: colors.black
         },
-
       }}
-
     />
-
     <HomeStack.Screen
       name="Addproduct"
       component={addProductScreen}
@@ -105,7 +93,6 @@ const HomeStackScreen = () => (
         },
       }}
     />
-
     <HomeStack.Screen
       name="Editproduct"
       component={editProductScreen}
@@ -146,11 +133,10 @@ const AppTabsScreen = () => (
       name="Cart"
       component={CartScreen}
       options={{
-        tabBarLabel: 'Carrinho',
+        tabBarLabel: 'Pedidos',
         tabBarIcon: ({ color }) => (
           <View>
-            <Icon name="cart-outline" type='Ionicons' style={{ color: color, fontSize: 26 }} />
-            <Badge />
+            <Icon name="cube-outline" type='Ionicons' style={{ color: color, fontSize: 26 }} />
           </View>
         ),
       }}

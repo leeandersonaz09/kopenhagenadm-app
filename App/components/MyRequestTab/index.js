@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 //others imports
+import { Button, Overlay } from 'react-native-elements';
 import { Icon, Spinner } from 'native-base';
 //firebase imports
 import { useFirebase } from '../../config/firebase'
@@ -11,6 +12,7 @@ import styles from './styles'
 import { Card } from '../';
 import { fonts, colors } from '../../styles';
 import Swipeable from 'react-native-gesture-handler/Swipeable'
+import metrics from '../../styles/metrics';
 
 export const DataItem = ({ item }) => {
 
@@ -44,6 +46,11 @@ export default function Pedidos({ documentDataIndex, loadingIndex }) {
     const [userData, setuserData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [documentData, setdocumentData] = useState([]);
+    const [visible, setVisible] = useState(false);
+
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
 
 
     React.useEffect(() => {
@@ -93,39 +100,6 @@ export default function Pedidos({ documentDataIndex, loadingIndex }) {
         }
     }, []);
 
-    const UserDataItem = (id) => {
-        let data;
-        console.log(id.data)
-        getDocument(
-            id.data,
-            (result) => {
-              setuserData(result.data());    
-            }
-          )
-
-        return (
-            <>
-                {
-                    item.map((data, index) => {
-                        return (
-                            <View key={index}>
-                                <View>
-                                    <Text>{data.name}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', }}>
-                                    <Text style={{ fontWeight: 'bold' }}>Quantidade:</Text>
-                                    <Text> {data.adress} </Text>
-                                </View>
-                                <View style={{ marginBottom: 10 }} />
-                            </View>
-                        )
-                    })
-                }
-
-
-            </>
-        )
-    }
     const RightActions = (progress, dragX, item) => {
 
         const scale = dragX.interpolate({
@@ -227,30 +201,60 @@ export default function Pedidos({ documentDataIndex, loadingIndex }) {
                                     return (
                                         <Swipeable key={index} renderRightActions={(progress, dragX) => RightActions(progress, dragX, data)} >
                                             <View style={styles2.container}>
-                                                <Card>
-                                                    <View style={styles2.content}>
-                                                        <View>
-                                                            <Text style={styles2.data}>{data.id}</Text>
+                                                <TouchableOpacity onPress={toggleOverlay}>
+                                                    <Card>
+                                                        <View style={styles2.content}>
+                                                            <View>
+                                                                <Text style={styles2.data}>{data.id}</Text>
+                                                            </View>
+                                                            <View style={[styles2.statusView, { backgroundColor: data.status == 'ativo' || data.status == 'entregue' || data.status == 'a caminho' ? colors.green : colors.red }]}>
+                                                                <Text style={styles2.status}>{data.status}</Text>
+                                                            </View>
                                                         </View>
-                                                        <View style={[styles2.statusView, { backgroundColor: data.status == 'ativo' || data.status == 'entregue' || data.status == 'a caminho' ? colors.green : colors.red }]}>
-                                                            <Text style={styles2.status}>{data.status}</Text>
-                                                        </View>
-                                                    </View>
 
-                                                    <View style={styles2.separator} />
-                                                    <DataItem item={data.pedido} />
+                                                        <View style={styles2.separator} />
+                                                        <Text>Cliente: {data.name}</Text>
+                                                        <Text>Telefone: {data.phone}</Text>
+                                                        <Overlay isVisible={visible}>
+                                                            <View style={{ width: metrics.screenWidth - 80, height: metrics.screenHeight - 170, }}>
+                                                                <View>
+                                                                    <Text style={styles2.data}>{data.id}</Text>
+                                                                    <View style={{ borderColor: '#f5f5f5', borderWidth: 1, marginTop: 15, marginBottom: 15, marginHorizontal: 25 }} />
+                                                                    <Text>Cliente: {data.name}</Text>
+                                                                    <View style={{ borderColor: '#f5f5f5', borderWidth: 1, marginTop: 15, marginBottom: 15, marginHorizontal: 25 }} />
+                                                                    <Text>{data.adress}</Text>
+                                                                    <Text>{data.bairro} - {data.city}</Text>
+                                                                    <View style={{ borderColor: '#f5f5f5', borderWidth: 1, marginTop: 15, marginBottom: 15, marginHorizontal: 25 }} />
+                                                                    <Text>Telefone: {data.phone}</Text>
+                                                                </View>
+                                                                <View style={styles2.separator} />
+                                                                <DataItem item={data.pedido} />
+                                                                <View style={styles2.separator} />
+                                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between',marginHorizontal: 25 }}>
+                                                                    <View>
+                                                                        <Text style={styles2.totalText}>Total</Text>
+                                                                    </View>
+                                                                    <View >
+                                                                        <Text style={styles2.totalValue}>R${data.total}</Text>
+                                                                    </View>
+                                                                </View>
+                                                                <View style={{ paddingTop: 190, paddingHorizontal: 50 }}>
+                                                                    <Button title="Fechar" onPress={toggleOverlay} />
+                                                                </View>
+                                                            </View>
+                                                        </Overlay>
+                                                        <View style={styles2.separator} />
 
-                                                    <View style={styles2.separator} />
-                                                    <UserDataItem data={data.userId} />
-                                                    <View style={styles2.content}>
-                                                        <View>
-                                                            <Text style={styles2.totalText}>Total</Text>
+                                                        <View style={styles2.content}>
+                                                            <View>
+                                                                <Text style={styles2.totalText}>Total</Text>
+                                                            </View>
+                                                            <View >
+                                                                <Text style={styles2.totalValue}>R${data.total}</Text>
+                                                            </View>
                                                         </View>
-                                                        <View >
-                                                            <Text style={styles2.totalValue}>R${data.total}</Text>
-                                                        </View>
-                                                    </View>
-                                                </Card>
+                                                    </Card>
+                                                </TouchableOpacity>
                                             </View>
                                         </Swipeable>
                                     )
@@ -310,7 +314,6 @@ const styles2 = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         justifyContent: 'space-between',
-        marginBottom: 10
     },
     data: {
         fontFamily: fonts.SFP_bold,

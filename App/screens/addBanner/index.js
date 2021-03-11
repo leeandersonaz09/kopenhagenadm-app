@@ -5,6 +5,7 @@ import styles from './styles';
 import { useFirebase } from '../../config/firebase'
 import { Button, Overlay } from 'react-native-elements';
 import { metrics } from '../../styles';
+import * as ImagePicker from "expo-image-picker";
 import FireFunctions from "../../config/FireFunctions";
 
 const addBanner = ({ navigation }) => {
@@ -21,8 +22,22 @@ const addBanner = ({ navigation }) => {
                 setdataBanner(result.data().banner);
             }
         })
+        const unsubscribe = getPhotoPermission()
+        return () => {
+            unsubscribe
+        }
 
     }, []);
+
+    const getPhotoPermission = async () => {
+        if (Constants.platform.ios) {
+            const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+
+            if (status != "granted") {
+                alert("We need permission to use your camera roll if you'd like to incude a photo.");
+            }
+        }
+    };
 
     const toggleOverlay = () => {
         setVisible(!visible);

@@ -37,6 +37,13 @@ const useFirebase = () => {
       .onSnapshot(onUpdate);
   }
 
+  const updateBanner = (doc) => {
+    firebase.firestore()
+      .collection('Banner')
+      .doc('Promoções')
+      .update(doc);
+  }
+
   const getDataExplorer = (category, limit, onUpdate) => {
 
     firebase.firestore()
@@ -144,7 +151,8 @@ const useFirebase = () => {
     getDataExplorer,
     getmoreDataExplorer,
     getBanner,
-    editStatus
+    editStatus,
+    updateBanner
   }
 }
 

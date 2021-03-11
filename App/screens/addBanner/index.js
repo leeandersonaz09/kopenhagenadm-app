@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon } from 'native-base';
 import styles from './styles';
 import { useFirebase } from '../../config/firebase'
+import { Button, Overlay } from 'react-native-elements';
+import { metrics } from '../../styles';
+import FireFunctions from "../../config/FireFunctions";
 
 const addBanner = ({ navigation }) => {
-    const { getBanner } = useFirebase();
+    const { getBanner, updateBanner } = useFirebase();
     const [dataBanner, setdataBanner] = useState([])
+    const [image, setImage] = useState(null)
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
 
@@ -19,35 +24,103 @@ const addBanner = ({ navigation }) => {
 
     }, []);
 
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
+
+    const handleEdit = (index, newImg) => {
+
+        let newArr = [...dataBanner]; // copying the old datas array
+        newArr[index] = newImg; // replace e.target.value with whatever you want to change it to
+        // updating the dataBanner on firestorage
+        updateBanner({ banner: newArr })
+    }
+
+    const handleDeletete = (index) => {
+        if (dataBanner.length > 1) {
+            // assigning the dataBanner to newArr variable
+            let newArr = [...dataBanner]; // copying the old datas array
+            // removing the element using splice
+            newArr.splice(index, 1);
+            // updating the dataBanner on firestorage
+            updateBanner({ banner: newArr })
+        }
+
+    }
+
+    const handleaddNew = async () => {
+
+        const remoteUri = await FireFunctions.shared.uploadPhotoAsync(image)
+        const index = dataBanner.length;
+        // assigning the dataBanner to newArr variable
+        let newArr = [...dataBanner]; // copying the old datas array
+        // removing the element using splice
+        newArr[index] = remoteUri;
+        // updating the dataBanner on firestorage
+        updateBanner({ banner: newArr })
+    }
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+        });
+
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+    };
+
     return (
         <View style={styles.container}>
-            {dataBanner.map((item, index) => {
-                console.log(item),
-                <ScrollView>
-                    <View style={styles.content}>
-                        <Image key={index} resizeMode="contain" style={styles.image} source={{ uri: item }} />
-                        <Text>{item}</Text>
-                        <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 10 }}>
-                            <TouchableOpacity
-                                style={styles.addCartButton}>
-                                <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Editar </Text>
-                                <View style={{ width: 10 }} />
-                                <Icon name="pencil" size={30} style={{ color: '#fff' }} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 10 }}>
-                            <TouchableOpacity
-                                style={styles.addCartButton}>
-                                <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Excluir </Text>
-                                <View style={{ width: 10 }} />
-                                <Icon name="trash" size={30} style={{ color: '#fff' }} />
-                            </TouchableOpacity>
+            <ScrollView>
+                {dataBanner.map((item, key) => (
+                    <View key={key} style={styles.content}>
+                        <Image resizeMode="contain" style={styles.image} source={{ uri: item }} />
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 6, paddingRight: 15 }}>
+                                <TouchableOpacity
+                                    onPress={() => handleEdit(key, "https://vivariomarrecife.com.br/wp-content/uploads/2020/10/kopenhagen.png")}
+                                    style={styles.addCartButton}>
+                                    <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Editar </Text>
+                                    <View style={{ width: 10 }} />
+                                    <Icon name="pencil" size={30} style={{ color: '#fff' }} />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 6 }}>
+                                <TouchableOpacity
+                                    onPress={() => handleDeletete(key)}
+                                    style={styles.addCartButton}>
+                                    <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Excluir </Text>
+                                    <View style={{ width: 10 }} />
+                                    <Icon name="trash" size={30} style={{ color: '#fff' }} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </ScrollView>
-            })}
+                )
+                )}
+                <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+                    <TouchableOpacity
+                        onPress={() => toggleOverlay()}
+                        style={styles.addCartButton}>
+                        <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar </Text>
+                        <View style={{ width: 10 }} />
+                        <Icon name="add" size={30} style={{ color: '#fff' }} />
+                    </TouchableOpacity>
+                </View>
+                <Overlay isVisible={visible}>
+                    <View style={{ width: metrics.screenWidth - 80, height: metrics.screenHeight - 170, }}>
+        
+                        <View style={{ paddingTop: 190, paddingHorizontal: 50 }}>
+                            <Button title="Fechar" onPress={toggleOverlay} />
+                        </View>
+                    </View>
+                </Overlay>
+            </ScrollView>
         </View>
     )
 }
 
 export default addBanner;
+

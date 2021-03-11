@@ -13,7 +13,7 @@ export default StyleSheet.create({
         marginTop:20
     },
     image:{
-        height: metrics.screenHeight / 2,
+        height: metrics.screenHeight / 2 -160,
         width: metrics.screenWidth - 40,
         borderRadius: 10,
         marginHorizontal: 20

@@ -216,7 +216,7 @@ const RootStackScreen = () => {
   const getPromo = React.useCallback(() => {
 
     getBanner("Promoções", (result) => {
-      //console.log(result.data().banner)
+     // console.log(result.data().banner)
       if (result) {
         AsyncStorage.setItem('Banner', JSON.stringify(result.data().banner))
 

@@ -6,7 +6,9 @@ import { useFirebase } from '../../config/firebase'
 import { Button, Overlay } from 'react-native-elements';
 import { metrics } from '../../styles';
 import * as ImagePicker from "expo-image-picker";
+import Constants from "expo-constants";
 import FireFunctions from "../../config/FireFunctions";
+import { showMessage } from 'react-native-flash-message';
 
 const addBanner = ({ navigation }) => {
     const { getBanner, updateBanner } = useFirebase();
@@ -41,38 +43,57 @@ const addBanner = ({ navigation }) => {
 
     const toggleOverlay = () => {
         setVisible(!visible);
+        setImage(null);
     };
-
-    const handleEdit = (index, newImg) => {
+    /*
+    const handleEdit = (index) => {
 
         let newArr = [...dataBanner]; // copying the old datas array
         newArr[index] = newImg; // replace e.target.value with whatever you want to change it to
         // updating the dataBanner on firestorage
         updateBanner({ banner: newArr })
     }
-
-    const handleDeletete = (index) => {
+    */
+    const handleDelete = (index) => {
         if (dataBanner.length > 1) {
             // assigning the dataBanner to newArr variable
             let newArr = [...dataBanner]; // copying the old datas array
             // removing the element using splice
             newArr.splice(index, 1);
             // updating the dataBanner on firestorage
-            updateBanner({ banner: newArr })
+            updateBanner({ banner: newArr });
+        } else {
+            showMessage({
+                message: `Você precisa de pelo menos um banner!`,
+                type: 'warning'
+            })
         }
 
     }
 
     const handleaddNew = async () => {
+        if (image) {
+            //Upload local image to store on firebase and return a link url to remoteUri
+            const remoteUri = await FireFunctions.shared.uploadPhotoAsync(image)
+            console.log('REMOTE' + remoteUri);
+            const index = dataBanner.length;
+            console.log('INDEX' + index);
+            // assigning the dataBanner to newArr variable
+            let newArr = [...dataBanner]; // copying the old datas array
+            // removing the element using splice
+            newArr[index] = remoteUri;
+            // updating the dataBanner on firestorage
+            updateBanner({ banner: newArr })
+            console.log('DATABANNER' + dataBanner);
+            toggleOverlay();
+        } else {
+            showMessage({
+                message: `Você precisa de pelo menos uma imagem selecionada!`,
+                type: 'warning'
+            })
+            toggleOverlay();
+        }
 
-        const remoteUri = await FireFunctions.shared.uploadPhotoAsync(image)
-        const index = dataBanner.length;
-        // assigning the dataBanner to newArr variable
-        let newArr = [...dataBanner]; // copying the old datas array
-        // removing the element using splice
-        newArr[index] = remoteUri;
-        // updating the dataBanner on firestorage
-        updateBanner({ banner: newArr })
     }
 
     const pickImage = async () => {
@@ -92,44 +113,35 @@ const addBanner = ({ navigation }) => {
                 {dataBanner.map((item, key) => (
                     <View key={key} style={styles.content}>
                         <Image resizeMode="contain" style={styles.image} source={{ uri: item }} />
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 6, paddingRight: 15 }}>
-                                <TouchableOpacity
-                                    onPress={() => handleEdit(key, "https://vivariomarrecife.com.br/wp-content/uploads/2020/10/kopenhagen.png")}
-                                    style={styles.addCartButton}>
-                                    <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Editar </Text>
-                                    <View style={{ width: 10 }} />
-                                    <Icon name="pencil" size={30} style={{ color: '#fff' }} />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 6 }}>
-                                <TouchableOpacity
-                                    onPress={() => handleDeletete(key)}
-                                    style={styles.addCartButton}>
-                                    <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Excluir </Text>
-                                    <View style={{ width: 10 }} />
-                                    <Icon name="trash" size={30} style={{ color: '#fff' }} />
-                                </TouchableOpacity>
-                            </View>
+
+                        <View style={styles.deletebuttonView}>
+                            <TouchableOpacity
+                                onPress={() => handleDelete(key)}
+                                style={styles.addCartButton}>
+                                <Text style={styles.buttonText}>Excluir </Text>
+                                <View style={{ width: 10 }} />
+                                <Icon name="trash" size={30} style={styles.Icon} />
+                            </TouchableOpacity>
                         </View>
+
                     </View>
                 )
                 )}
-                <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+                <View style={styles.addButton}>
                     <TouchableOpacity
                         onPress={() => toggleOverlay()}
                         style={styles.addCartButton}>
-                        <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar </Text>
+                        <Text style={styles.textaddButton}>Adicionar </Text>
                         <View style={{ width: 10 }} />
-                        <Icon name="add" size={30} style={{ color: '#fff' }} />
+                        <Icon name="add" size={30} style={styles.Icon} />
                     </TouchableOpacity>
                 </View>
                 <Overlay isVisible={visible}>
-                    <View style={{ width: metrics.screenWidth - 80, height: metrics.screenHeight - 170, }}>
+                    <View style={styles.screenWidth}>
                         {image ? (
                             <Image
                                 source={{ uri: image }}
-                                style={{ width: '100%', height: 300, borderRadius: 20 }}
+                                style={styles.imageOverlay}
                             />
                         ) : (
                             <TouchableOpacity onPress={() => pickImage()}>
@@ -137,6 +149,9 @@ const addBanner = ({ navigation }) => {
                             </TouchableOpacity>
                         )}
                         <View style={{ paddingTop: 190, paddingHorizontal: 50 }}>
+                            <Button title="Enviar " onPress={() => handleaddNew()} />
+                        </View>
+                        <View style={{ paddingTop: 10, paddingHorizontal: 50 }}>
                             <Button title="Fechar" onPress={toggleOverlay} />
                         </View>
                     </View>

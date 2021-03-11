@@ -10,25 +10,65 @@ export default StyleSheet.create({
     content: {
         alignContent: 'center',
         alignItems: 'center',
-        marginTop:20
+        paddingVertical:10
     },
-    image:{
-        height: metrics.screenHeight / 2 -160,
+    image: {
+        height: metrics.screenHeight / 2 - 160,
         width: metrics.screenWidth - 40,
         borderRadius: 10,
         marginHorizontal: 20
     },
     addCartButton: {
         width: 180,
-        backgroundColor: '#000',
+        backgroundColor: colors.black,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: "center",
         borderRadius: 5,
-        padding: 4
+    },
+    buttonViewContainer: {
+        flexDirection: 'row'
+    },
+    editbuttonView: {
+        textAlign: 'center',
+        alignItems: 'center',
+        paddingRight: 15
+    },
+    deletebuttonView: {
+        textAlign: 'center',
+        alignItems: 'center',
+        marginTop: 15
+    },
+    buttonText: {
+        fontSize: 18,
+        color: "white",
+        fontWeight: "bold"
+    },
+    addButton: {
+        textAlign: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 20
+    },
+    textaddButton: {
+        fontSize: 18,
+        color: "white",
+        fontWeight: "bold"
+    },
+    Icon: {
+        color: colors.white
+    },
+    screenWidth: {
+        width: metrics.screenWidth - 80,
+        height: metrics.screenHeight - 170,
+    },
+    imageOverlay: {
+        width: '100%',
+        height: 300,
+        borderRadius: 20,
     },
     ButtonImg: {
-        marginBottom: 50,
+        marginTop: 50,
         alignSelf: 'center',
         width: 100,
         height: 100

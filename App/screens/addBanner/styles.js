@@ -27,5 +27,11 @@ export default StyleSheet.create({
         borderRadius: 5,
         padding: 4
     },
+    ButtonImg: {
+        marginBottom: 50,
+        alignSelf: 'center',
+        width: 100,
+        height: 100
+    },
 
 });

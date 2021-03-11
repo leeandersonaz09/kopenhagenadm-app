@@ -111,7 +111,16 @@ const addBanner = ({ navigation }) => {
                 </View>
                 <Overlay isVisible={visible}>
                     <View style={{ width: metrics.screenWidth - 80, height: metrics.screenHeight - 170, }}>
-        
+                        {image ? (
+                            <Image
+                                source={{ uri: image }}
+                                style={{ width: '100%', height: 300, borderRadius: 20 }}
+                            />
+                        ) : (
+                            <TouchableOpacity onPress={() => pickImage()}>
+                                <Image style={styles.ButtonImg} source={require('../../assets/add_p.png')} />
+                            </TouchableOpacity>
+                        )}
                         <View style={{ paddingTop: 190, paddingHorizontal: 50 }}>
                             <Button title="Fechar" onPress={toggleOverlay} />
                         </View>

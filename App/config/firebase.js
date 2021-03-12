@@ -88,6 +88,12 @@ const useFirebase = () => {
       .onSnapshot(onUpdate);
   }
 
+  const getColletionFrete = (onUpdate) => {
+    firebase.firestore()
+      .collection('Frete')
+      .onSnapshot(onUpdate);
+  }
+
   const saveDocument = (documentPath, document) => {
     firebase.firestore()
       .collection('users')
@@ -142,6 +148,7 @@ const useFirebase = () => {
     authUser,
     logout,
     getDocumentFrete,
+    getColletionFrete,
     addProduct,
     getDocument,
     saveDocument,

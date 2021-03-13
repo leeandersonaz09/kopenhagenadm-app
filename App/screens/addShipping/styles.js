@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { colors, metrics } from '../../styles';
+import { colors, metrics, fonts} from '../../styles';
 
 export default StyleSheet.create({
     container: {
@@ -9,14 +9,25 @@ export default StyleSheet.create({
     },
     content: {
         alignContent: 'center',
-        alignItems: 'center',
-        paddingVertical:10
+        marginHorizontal:20
     },
     image: {
         height: metrics.screenHeight / 2 - 160,
         width: metrics.screenWidth - 40,
         borderRadius: 10,
-        marginHorizontal: 20
+    },
+    textBox:{
+        flexDirection: 'row', 
+        justifyContent:'space-between',
+        marginBottom:40
+    },
+    textPrice:{
+        fontSize: fonts.headertitle,
+        fontFamily: fonts.SFP_regular
+    },
+    textBairro:{
+        fontSize: fonts.headertitle,
+        fontFamily: fonts.SFP_regular
     },
     addCartButton: {
         width: 180,
@@ -26,13 +37,23 @@ export default StyleSheet.create({
         justifyContent: "center",
         borderRadius: 5,
     },
+    addeditButton: {
+        width: 40,
+        height:40,
+        backgroundColor: colors.black,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: "center",
+        borderRadius: 85,
+    },
     buttonViewContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginHorizontal:20,
     },
     editbuttonView: {
         textAlign: 'center',
         alignItems: 'center',
-        paddingRight: 15
+        paddingRight: 15,
     },
     deletebuttonView: {
         textAlign: 'center',
@@ -73,5 +94,27 @@ export default StyleSheet.create({
         width: 100,
         height: 100
     },
+    filds: {
+        alignSelf: 'stretch',
+        paddingHorizontal: 30,
+        marginBottom: 40
+      },
+      inputadress: {
+        borderWidth: 1,
+        borderColor: '#DDD',
+        paddingHorizontal: 10,
+        fontSize: 16,
+        color: '#444',
+        height: 44,
+        marginBottom: 10,
+        borderRadius: 20
+      },
+      tittleOverlay:{
+          fontFamily:fonts.SFP_bold,
+          fontSize:20,
+          marginTop:20,
+          marginBottom:25,
+          textAlign: 'center'
+      }
 
 });

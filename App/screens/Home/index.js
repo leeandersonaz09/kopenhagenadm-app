@@ -70,7 +70,7 @@ export default function Home({ navigation }) {
   }
 
   const addBairro = () => {
-    // navigation.push('Addproduct')
+     navigation.push('addShipping')
     console.log("addBairro");
   }
 

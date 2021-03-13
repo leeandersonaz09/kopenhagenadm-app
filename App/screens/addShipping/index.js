@@ -1,36 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { Icon } from 'native-base';
 import styles from './styles';
 import { useFirebase } from '../../config/firebase'
 import { Button, Overlay } from 'react-native-elements';
 import { metrics } from '../../styles';
+import { Card } from '../../components'
 import { showMessage } from 'react-native-flash-message';
 
 const addShipping = ({ navigation }) => {
-    const { updateBanner, getColletionFrete } = useFirebase();
+    const { setCollection, getColletionFrete, deleteItembyId } = useFirebase();
     const [dataFrete, setdataFrete] = useState([])
-    const [image, setImage] = useState(null)
+    const [bairro, setBairro] = useState('')
+    const [valor, setValor] = useState(0.00)
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         const getCFrete = getColletionFrete((querySnapshot) => {
 
             if (!querySnapshot.empty) {
-              const list = [];
-              querySnapshot.forEach(doc => {
-      
-                const { valor } = doc.data();
-                list.push({
-                  id: doc.id,
-                  valor
+                const list = [];
+                querySnapshot.forEach(doc => {
+
+                    const { valor } = doc.data();
+                    list.push({
+                        id: doc.id,
+                        valor
+                    });
                 });
-              });
-              setdataFrete(list);
+                setdataFrete(list);
             } else {
                 setdataFrete(null)
             }
-          })
+        })
 
         return () => {
             getCFrete;
@@ -41,24 +43,25 @@ const addShipping = ({ navigation }) => {
 
     const toggleOverlay = () => {
         setVisible(!visible);
-        setImage(null);
     };
-    /*
+  
     const handleEdit = (index) => {
 
-        let newArr = [...dataBanner]; // copying the old datas array
-        newArr[index] = newImg; // replace e.target.value with whatever you want to change it to
-        // updating the dataBanner on firestorage
-        updateBanner({ banner: newArr })
+        console.log('EDIT')
     }
-    */
-    const handleDelete = (index) => {
-        if (dataBanner.length > 1) {
-            
-           
+ 
+    const handleDelete = (id) => {
+        if (dataFrete.length > 1) {
+            const collectionref = 'Frete'
+            deleteItembyId(collectionref, id);
+            showMessage({
+                message: `Ação conluída com sucesso!`,
+                type: 'success'
+            })
+
         } else {
             showMessage({
-                message: `Você precisa de pelo menos um banner!`,
+                message: `Você precisa de pelo menos um bairro cadastrado!`,
                 type: 'warning'
             })
         }
@@ -66,31 +69,60 @@ const addShipping = ({ navigation }) => {
     }
 
     const handleaddNew = async () => {
-        //
+        const collectionref = 'Frete'
+        const docref = bairro
+
+        try {
+            setCollection(collectionref, docref, { valor: valor});
+            showMessage({
+                message: `Ação conluída com sucesso!`,
+                type: 'success'
+            })
+            toggleOverlay();
+        } catch (error) {
+            showMessage({
+                message: `Houve um erro, tente novamente!`,
+                type: 'warning'
+            })
+            toggleOverlay();
+        }
+       
     }
 
-    return (
+    return (    
         <View style={styles.container}>
             <ScrollView>
                 {dataFrete.map((item, key) => (
                     <View key={key} style={styles.content}>
-                        
-                        <View style={styles.deletebuttonView}>
-                            <TouchableOpacity
-                                onPress={() => handleDelete(key)}
-                                style={styles.addCartButton}>
-                                <Text style={styles.buttonText}>Excluir </Text>
-                                <View style={{ width: 10 }} />
-                                <Icon name="trash" size={30} style={styles.Icon} />
-                            </TouchableOpacity>
-                        </View>
+                        <Card>
+                            <View style={styles.textBox}>
 
+                                <Text style={styles.textBairro}>Bairro: {item.id}</Text>
+                                <Text style={styles.textPrice}>Valor: {item.valor}</Text>
+
+                            </View>
+                            <View style={styles.deletebuttonView}>
+                                <View style={styles.buttonViewContainer}>
+                                    <TouchableOpacity
+                                        onPress={() =>( toggleOverlay(), setBairro(item.id), setValor(item.valor))}
+                                        style={[styles.addeditButton, { marginRight: 20 }]}>
+                                        <Icon name="pencil" size={30} style={styles.Icon} />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => handleDelete(item.id)}
+                                        style={styles.addeditButton}>
+                                        <Icon name="trash" size={30} style={styles.Icon} />
+                                    </TouchableOpacity>
+                                </View>
+
+                            </View>
+                        </Card>
                     </View>
                 )
                 )}
                 <View style={styles.addButton}>
                     <TouchableOpacity
-                        onPress={() => toggleOverlay()}
+                        onPress={() => ( toggleOverlay(), setBairro(''), setValor(0.00))}
                         style={styles.addCartButton}>
                         <Text style={styles.textaddButton}>Adicionar </Text>
                         <View style={{ width: 10 }} />
@@ -99,16 +131,24 @@ const addShipping = ({ navigation }) => {
                 </View>
                 <Overlay isVisible={visible}>
                     <View style={styles.screenWidth}>
-                        {image ? (
-                            <Image
-                                source={{ uri: image }}
-                                style={styles.imageOverlay}
+                        <Text style={styles.tittleOverlay}>Frete</Text>
+                        <View style={styles.filds}>
+                            <TextInput
+                                style={styles.inputadress}
+                                value={bairro}
+                                placeholder="Bairro"
+                                autoCorrect={false}
+                                onChangeText={value => setBairro(value)}
                             />
-                        ) : (
-                            <TouchableOpacity onPress={() => pickImage()}>
-                                <Image style={styles.ButtonImg} source={require('../../assets/add_p.png')} />
-                            </TouchableOpacity>
-                        )}
+                            <TextInput
+                                style={styles.inputadress}
+                                value={valor}
+                                placeholder="Valor"
+                                autoCorrect={false}
+                                onChangeText={value => setValor(value)}
+                            />
+                        </View>
+
                         <View style={{ paddingTop: 190, paddingHorizontal: 50 }}>
                             <Button title="Enviar " onPress={() => handleaddNew()} />
                         </View>

@@ -24,6 +24,7 @@ import Contact from "../screens/Contact";
 import addProductScreen from '../screens/AddProduct';
 import editProductScreen from '../screens/EditProduct';
 import addBanner from '../screens/addBanner';
+import addShipping from '../screens/addShipping';
 import { useFirebase } from './firebase'
 import Badge from '../components/Badge';
 //import styles
@@ -111,6 +112,18 @@ const HomeStackScreen = () => (
       component={addBanner}
       options={{
         headerTitle: 'Banner Promocional',
+        headerTitleAlign: "center",
+        headerTintColor: colors.yellow,
+        headerStyle: {
+          backgroundColor: colors.black
+        },
+      }}
+    />
+     <HomeStack.Screen
+      name="addShipping"
+      component={addShipping}
+      options={{
+        headerTitle: 'Gerenciar Frete',
         headerTitleAlign: "center",
         headerTintColor: colors.yellow,
         headerStyle: {

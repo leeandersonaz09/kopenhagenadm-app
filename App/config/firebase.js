@@ -37,6 +37,12 @@ const useFirebase = () => {
       .onSnapshot(onUpdate);
   }
 
+  const setCollection = (collectionref, docref, obj) => {
+    firebase.firestore()
+      .collection(collectionref)
+      .doc(docref)
+      .set(obj);
+  }
   const updateBanner = (doc) => {
     firebase.firestore()
       .collection('Banner')
@@ -130,10 +136,10 @@ const useFirebase = () => {
   }
 
   //delete item to wallet 
-  const deleteItembyId = async (id) => {
+  const deleteItembyId = async (collectionref, id) => {
 
     firebase.firestore()
-      .collection('Produtos')
+      .collection(collectionref)
       .doc(id)
       .delete()
   };
@@ -159,7 +165,8 @@ const useFirebase = () => {
     getmoreDataExplorer,
     getBanner,
     editStatus,
-    updateBanner
+    updateBanner,
+    setCollection
   }
 }
 

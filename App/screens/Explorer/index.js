@@ -148,8 +148,8 @@ function Explorer({ route, navigation }) {
   }
 
   const deleteItem = (id) => {
-
-    deleteItembyId(id)
+    const collectionref = 'Produtos'
+    deleteItembyId(collectionref, id)
   }
   const editItem = (data) => {
     navigation.push('Editproduct', data)

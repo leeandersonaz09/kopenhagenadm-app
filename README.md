@@ -81,11 +81,9 @@ To use this two index `where` and `orderBy` together or more, you have to go on 
 
 Check this on this link: (https://firebase.google.com/docs/firestore/query-data/indexing).
 
-<img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshoots/indexfirestorage.png" width="450px" />
-
 ## Installation
 
-- `git clone https://github.com/leeandersonaz09/Essencia-Feminina-App.git <name-you-want-to-your-project>`
+- `git clone https://github.com/leeandersonaz09/kopenhagenadm-app.git <name-you-want-to-your-project>`
 - In your command painel use `.code` if using visual studio code or  `cd C://<destination-folder-name>/<name-you-want-to-your-project>`
 
 Then run the command: 

@@ -1,4 +1,3 @@
-# kopenhagenadm-app
 <h1 align="center">
     <img alt="kopenhagen Adm App" title="#delicinha" src="assets/icon.png" width="250px" />
 </h1>
@@ -30,11 +29,13 @@ Um catalogo de produtos para sua loja. Com ele, seus produtos podem atingir um p
 </h3>
 
 <p align="center">
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164807_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164937_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-165031_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164928_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164841_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164815_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164937_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-165031_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164928_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164841_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164841_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/InkedScreenshot_20210916-164316_Kopenhagen Salvador_LI.jpg" width="250px" />
 </p>
 
 Functionality Implementention Sprints

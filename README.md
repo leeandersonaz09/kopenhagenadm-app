@@ -34,7 +34,6 @@ Um catalogo de produtos para sua loja. Com ele, seus produtos podem atingir um p
     <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-165031_Kopenhagen Salvador ADM.jpg" width="250px" />
     <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164928_Kopenhagen Salvador ADM.jpg" width="250px" />
     <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164841_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/Screenshot_20210916-164841_Kopenhagen Salvador ADM.jpg" width="250px" />
     <img alt="Kopenhagen Salvador" title="#delicinha" src="Screenshots/InkedScreenshot_20210916-164316_Kopenhagen Salvador_LI.jpg" width="250px" />
 </p>
 

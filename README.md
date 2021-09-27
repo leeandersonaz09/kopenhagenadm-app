@@ -14,15 +14,7 @@
 
 Tenha um catálogo de produtos na palma da mão de maneira fácil e intuitiva para seus clientes!
 
-Um catalogo de produtos para sua loja. Com ele, seus produtos podem atingir um publico ainda maior. O Essência Feminina App é pensado para que seu cliente possa visualizar promoções e produtos de maneira fácil e rápida. O cliente fica satisfeito e o alcance do seu publico fica ainda maior. 
-
-## Visite nosso site!!!
-
-[https://essenciafeminina.netlify.app/](https://essenciafeminina.netlify.app/)
-
-## Disponível no Google Play!!!
-
-[https://play.google.com/store/apps/details?id=com.essenciaf.essenciaf](https://play.google.com/store/apps/details?id=com.essenciaf.essenciaf)
+Um catalogo de produtos para sua loja. Com ele, seus produtos podem atingir um publico ainda maior. O Kopenhagen Salvador App ADM é pensado para que sua loja, afim de gerenciar o seu catálogo de maneira fácil e intuitiva. O cliente fica satisfeito e o alcance do seu publico fica ainda maior. 
 
 <h3 align="center">
   Screenshots
@@ -40,12 +32,12 @@ Um catalogo de produtos para sua loja. Com ele, seus produtos podem atingir um p
 Functionality Implementention Sprints
 
 - [x] Tabs
-- [x] Screens: (Home, Eplorer, Product Description, Contact)
+- [x] Screens: (Home, Product Description, Contact, Add product, Add Banner, Profile)
 - [x] SearchBar
 - [x] Firebase Integration
 - [x] Generate apk and app bundle signed
 - [x] Tests
-- [x] Publishing App Bundle on Google PLay Store
+- [ ] Publishing App Bundle on Google PLay Store
 
 You'll need to have [Expo](https://expo.io/learn) installed on your machine in order to follow along.
 
@@ -164,8 +156,4 @@ Like `yarn start`, but also attempts to open your app on a connected Android dev
 ### Demo 
 If you're interested about Essência Feminina App be sure to visit:
 
-[Essência Feminina Site](https://essenciafeminina.netlify.app/)!
-
-<a href="https://play.google.com/store/apps/details?id=com.essenciaf.essenciaf"><img width="250px" src="https://play.google.com/intl/pt-BR/badges/static/images/badges/pt-br_badge_web_generic.png"></img></a>
-
-# Essencia-Feminina-App"
+# kopenhagen-Adm-App"

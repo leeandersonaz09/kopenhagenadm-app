@@ -30,11 +30,11 @@ Um catalogo de produtos para sua loja. Com ele, seus produtos podem atingir um p
 </h3>
 
 <p align="center">
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshoots/Screenshot_20210916-164807_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshoots/Screenshot_20210916-164937_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshoots/Screenshot_20210916-165031_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshoots/Screenshot_20210916-164928_Kopenhagen Salvador ADM.jpg" width="250px" />
-    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshoots/Screenshot_20210916-164841_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164807_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164937_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-165031_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164928_Kopenhagen Salvador ADM.jpg" width="250px" />
+    <img alt="Catálogo Essência Feminina" title="#delicinha" src="Screenshots/Screenshot_20210916-164841_Kopenhagen Salvador ADM.jpg" width="250px" />
 </p>
 
 Functionality Implementention Sprints
